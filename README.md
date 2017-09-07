@@ -59,7 +59,7 @@ This open source plugin can be used to extract iib user traces during test execu
 
 ## History
 
-- 1.0   - Initial release
+- 1.0.0   - Initial release
 
 
 ## Credits
