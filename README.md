@@ -48,10 +48,6 @@ This open source plugin can be used to extract iib user traces during test execu
 	</build>
 ```
 
-## Requirements
-
-- SonarQube 5.6
-
 
 ## Contributing
 
