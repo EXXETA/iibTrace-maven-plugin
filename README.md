@@ -19,7 +19,7 @@ This open source plugin can be used to extract iib user traces during test execu
 			<plugin>
 				<groupId>com.exxeta.we.iib</groupId>
 				<artifactId>iibTrace-maven-plugin</artifactId>
-				<version>1.0</version>
+				<version>1.0.0</version>
 				<executions>
 					<execution>
 						<id>pre-unit-test</id>
