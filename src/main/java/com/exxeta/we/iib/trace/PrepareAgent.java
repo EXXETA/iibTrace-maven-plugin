@@ -41,13 +41,16 @@ public class PrepareAgent extends AbstractMojo {
 	@Parameter(defaultValue = "true")
 	private boolean clear;
 
+	@Parameter(defaultValue = "20000")
+	private long logSize;
+
 	public void execute() throws MojoExecutionException {
 		getLog().info("Resetting trace to debug. ");
 
 		String level = "debug";
 		try {
 			String cmd = "cmd.exe /c call \"" + mqsiProfile.replace('/', '\\') + "\" 2>nul >nul && \"" + mqsiChangeTrace.replace('/', '\\') + "\" " + broker
-					+ " -u -e " + executionGroup + " -l " + level + " -c 2000 " + (clear ? " -r" : "");
+					+ " -u -e " + executionGroup + " -l " + level + " -c "+logSize+" " + (clear ? " -r" : "");
 			getLog().info("Executing:"+cmd);
 			Runtime.getRuntime()
 					.exec(cmd)
