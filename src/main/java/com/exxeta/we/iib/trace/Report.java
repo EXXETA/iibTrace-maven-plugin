@@ -46,15 +46,17 @@ public class Report extends AbstractMojo {
 		try {
 			getLog().info("Creating trace file. ");
 
-			String cmd = "cmd.exe /c mqsiprofile && mqsireadlog " + broker + " -e " + executionGroup + " -u -o \""
-					+ reportDir.getAbsolutePath() + "/" + executionGroup + ".xml\" 2>nul";
+			reportDir.mkdirs();
+			
+			String cmd = "cmd.exe /c \"mqsiprofile && mqsireadlog " + broker + " -e " + executionGroup + " -u -o \"\""
+					+ reportDir.getAbsolutePath() + "/" + executionGroup + ".xml\"\" 2>nul \"";
 			getLog().info("Executing:" + cmd);
 			Runtime.getRuntime().exec(cmd, null, new File(mqsiDir)).waitFor();
 
 			getLog().info("Resetting trace to none. ");
 
 			String level = "none";
-			cmd = "cmd.exe /c mqsiprofile && mqsichangetrace " + broker + " -u -e " + executionGroup + " -l " + level + " -c 2000 " + (clear ? " -r" : "");
+			cmd = "cmd.exe /c \"mqsiprofile && mqsichangetrace " + broker + " -u -e " + executionGroup + " -l " + level + " -c 2000 " + (clear ? " -r" : "") + "\"";
 			getLog().info("Executing:" + cmd);
 			Runtime.getRuntime().exec(cmd, null, new File(mqsiDir)).waitFor();
 

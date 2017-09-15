@@ -48,7 +48,7 @@ public class PrepareAgent extends AbstractMojo {
 
 		String level = "debug";
 		try {
-			String cmd = "cmd.exe /c mqsiprofile && mqsichangetrace " + broker + " -u -e " + executionGroup + " -l " + level + " -c "+logSize+" " + (clear ? " -r" : "");
+			String cmd = "cmd.exe /c \"mqsiprofile && mqsichangetrace " + broker + " -u -e " + executionGroup + " -l " + level + " -c "+logSize+" " + (clear ? " -r" : "") + "\"";
 			getLog().info("Executing:"+cmd);
 			Runtime.getRuntime()
 					.exec(cmd, null, new File(mqsiDir))
