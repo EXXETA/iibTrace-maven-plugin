@@ -28,13 +28,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 public class Report extends AbstractMojo {
 
 	@Parameter(required = true)
-	private String mqsiProfile;
-
-	@Parameter(required = true)
-	private String mqsiChangeTrace;
-
-	@Parameter(required = true)
-	private String mqsiReadLog;
+	private String mqsiDir;
 
 	@Parameter(required = true)
 	private String broker;
@@ -52,20 +46,17 @@ public class Report extends AbstractMojo {
 		try {
 			getLog().info("Creating trace file. ");
 
-			String cmd = "cmd.exe /c call \"" + mqsiProfile.replace('/', '\\') + "\" 2>nul >nul && \""
-					+ mqsiReadLog.replace('/', '\\') + "\" " + broker + " -e " + executionGroup + " -u -o \""
+			String cmd = "cmd.exe /c mqsiprofile && mqsireadlog " + broker + " -e " + executionGroup + " -u -o \""
 					+ reportDir.getAbsolutePath() + "/" + executionGroup + ".xml\" 2>nul";
 			getLog().info("Executing:" + cmd);
-			Runtime.getRuntime().exec(cmd).waitFor();
+			Runtime.getRuntime().exec(cmd, null, new File(mqsiDir)).waitFor();
 
 			getLog().info("Resetting trace to none. ");
 
 			String level = "none";
-			cmd = "cmd.exe /c call \"" + mqsiProfile.replace('/', '\\') + "\" 2>nul >nul && \""
-					+ mqsiChangeTrace.replace('/', '\\') + "\" " + broker + " -u -e " + executionGroup + " -l " + level
-					+ " -c 2000 " + (clear ? " -r" : "");
+			cmd = "cmd.exe /c mqsiprofile && mqsichangetrace " + broker + " -u -e " + executionGroup + " -l " + level + " -c 2000 " + (clear ? " -r" : "");
 			getLog().info("Executing:" + cmd);
-			Runtime.getRuntime().exec(cmd).waitFor();
+			Runtime.getRuntime().exec(cmd, null, new File(mqsiDir)).waitFor();
 
 		} catch (Exception e) {
 			getLog().error(e);

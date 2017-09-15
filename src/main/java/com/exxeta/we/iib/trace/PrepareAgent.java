@@ -17,6 +17,8 @@
  */
 package com.exxeta.we.iib.trace;
 
+import java.io.File;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -27,10 +29,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 public class PrepareAgent extends AbstractMojo {
 
 	@Parameter(required = true)
-	private String mqsiProfile;
-
-	@Parameter(required = true)
-	private String mqsiChangeTrace;
+	private String mqsiDir;
 
 	@Parameter(required = true)
 	private String broker;
@@ -49,11 +48,10 @@ public class PrepareAgent extends AbstractMojo {
 
 		String level = "debug";
 		try {
-			String cmd = "cmd.exe /c call \"" + mqsiProfile.replace('/', '\\') + "\" 2>nul >nul && \"" + mqsiChangeTrace.replace('/', '\\') + "\" " + broker
-					+ " -u -e " + executionGroup + " -l " + level + " -c "+logSize+" " + (clear ? " -r" : "");
+			String cmd = "cmd.exe /c mqsiprofile && mqsichangetrace " + broker + " -u -e " + executionGroup + " -l " + level + " -c "+logSize+" " + (clear ? " -r" : "");
 			getLog().info("Executing:"+cmd);
 			Runtime.getRuntime()
-					.exec(cmd)
+					.exec(cmd, null, new File(mqsiDir))
 					.waitFor();
 		} catch (Exception e) {
 			getLog().error(e);
